@@ -2,7 +2,7 @@
 
 # Assign values to parameters that will be used in Script
 # Update G_ID value with Google Drive Directory ID
-DATE="$(date +%Y-%b-%d)"
+DATE="$(date +%Y-%m-%d)"
 G_ID=""
 BACKUP_DIR="/home/backups"
 
