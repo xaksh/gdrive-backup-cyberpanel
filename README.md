@@ -17,7 +17,7 @@ Automate Creation and Uploading of CyberPanel Backups to Google Drive using rclo
 
  > source setup.sh "server.hostname.com" "swift" "30 5 * * *"
 
-   server.hostname.com = Server's Hostname where Backup Script will run
+   server.hostname.com = Server's Hostname where Backup Script will run or Primary Domain Name
    
    swift = Host Node name
    
