@@ -1,15 +1,16 @@
 #!/bin/bash
 
 # Assign values to parameters that will be used in Script
-# Update G_ID value with Google Drive Directory ID
 DATE="$(date +%Y-%m-%d)"
-G_ID=""
-BACKUP_DIR="/home/backups"
+BACKUP_DIR="/backup"
+SERVER_HOSTNAME=
+NODE=
 
 echo "~~~~~~~~~~~~~~ Starting BACKUP ~~~~~~~~~~~~~~"
 echo $DATE
+
 # Clean old Backup Directory and Journal Files and create fresh backup directory
-rm -rf /home/*/backup/* /var/log/journal/*/*.journal $BACKUP_DIR && mkdir -p "$BACKUP_DIR/$DATE"
+rm -rf /home/*/backup/* /var/log/journal/*/*.journal && mkdir -p "$BACKUP_DIR/$DATE"
 wait
 
 # Run CyberPanel's Local Backup Script
@@ -24,11 +25,11 @@ wait
 
 # Upload backup files to respected Directory in Google Drive
 echo "Uploading Backup tar balls to Google Drive"
-time /usr/local/bin/gdrive upload --recursive --parent $G_ID $BACKUP_DIR/$DATE
+time rclone copy $BACKUP_DIR/$DATE gdrive:basezap"$NODE"nodebackups/$SERVER_HOSTNAME/$DATE
 wait
 
 # Remove backup directory
-time rm -rf $BACKUP_DIR
+time rm -rf $BACKUP_DIR/$DATE
 wait
 
 exit

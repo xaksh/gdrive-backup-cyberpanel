@@ -1,16 +1,18 @@
 #!/bin/bash
 
-# Run cron.sh
-source /root/gdrive-backup-cyberpanel/cron.sh
+# Set Server Hostname and Host Node in Backup Script passed in the arguments
+sed -i s/^SERVER_HOSTNAME=.*/SERVER_HOSTNAME=$1/ /root/gdrive-backup-cyberpanel/backup.sh
+sed -i s/^NODE=.*/NODE=$2/ /root/gdrive-backup-cyberpanel/backup.sh
 
-# Download gdrive Binary from https://github.com/prasmussen/gdrive and Run Below commands
-# For Linux 64-bit
-wget -O gdrive "https://docs.google.com/uc?id=0B3X9GlR6EmbnQ0FtZmJJUXEyRTA&export=download"
-wait
-sudo install gdrive /usr/local/bin/gdrive
+# Run cron.sh for adding cronjob
+bash /root/gdrive-backup-cyberpanel/cron.sh "$3"
+
+# Install rclone https://rclone.org
+curl https://rclone.org/install.sh | sudo bash
 wait
 
-# Link your Google Account to gdrive-cli
-gdrive about
+# Link your Google Account to rclone by creating New Remote
+rclone config
 wait
+
 
