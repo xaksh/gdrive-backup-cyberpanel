@@ -2,34 +2,27 @@
 
 # Assign values to parameters that will be used in Script
 DATE="$(date +%Y-%m-%d)"
-BACKUP_DIR="/backup"
 SERVER_HOSTNAME=
 NODE=
 
-echo "~~~~~~~~~~~~~~ Starting BACKUP ~~~~~~~~~~~~~~"
+# Clean old Backup and Journal Files
+rm -rf /home/*/backup/* /var/log/journal/*/*.journal
+wait
+
+echo "~~~~~~~~~~~~~~ Starting BACKUP Creation and Upload to Google Drive ~~~~~~~~~~~~~~"
 echo $DATE
-
-# Clean old Backup Directory and Journal Files and create fresh backup directory
-rm -rf /home/*/backup/* /var/log/journal/*/*.journal && mkdir -p "$BACKUP_DIR/$DATE"
+start=$SECONDS
+ls -1 /home -Icyberpanel -Idocker -Ibackup -Ilscache -Ivmail | while read user; do
+cyberpanel createBackup --domainName $user > /dev/null
+sleep 45
+rclone copy /home/$user/backup gdrive:basezap"$NODE"nodebackups/$SERVER_HOSTNAME/$DATE/$user
 wait
-
-# Run CyberPanel's Local Backup Script
-echo "Starting CybperPanel Backup Script"
-time python /usr/local/CyberCP/plogical/backupScheduleLocal.py
+# Clean backup directory
+rm -rf /home/$user/backup/*
 wait
-
-# Copy tar.gz backup files to directory gdrivebackup
-echo "Copying tar balls to Backup Directory"
-mv /home/*/backup/*.tar.gz "$BACKUP_DIR/$DATE"
-wait
-
-# Upload backup files to respected Directory in Google Drive
-echo "Uploading Backup tar balls to Google Drive"
-time rclone copy $BACKUP_DIR/$DATE gdrive:basezap"$NODE"nodebackups/$SERVER_HOSTNAME/$DATE
-wait
-
-# Remove backup directory
-time rm -rf $BACKUP_DIR/$DATE
-wait
+done
+echo "~~~~~~~~~~~~~~ Backup Creation and Upload to Google Drive Finished ~~~~~~~~~~~~~~"
+duration=$(( SECONDS - start ))
+echo "Total Time Taken $duration Seconds"
 
 exit

@@ -7,9 +7,9 @@ Automate Creation and Uploading of CyberPanel Backups to Google Drive using rclo
  
  or you can use wget to download Zip Archive and Extract.
  
- > wget 'https://github.com/xaksh/gdrive-backup-cyberpanel/archive/cyberpanel+gdrive.zip'
- 
- > unzip -j cyberpanel+gdrive.zip -d gdrive-backup-cyberpanel
+ > wget 'https://github.com/xaksh/gdrive-backup-cyberpanel/archive/cyberpanel+gdrive+jbc.zip'
+
+ > unzip -j cyberpanel+gdrive+jbc.zip -d gdrive-backup-cyberpanel
 
 2) Run setup.sh with Server Hostname, Host Node, Cron Job Time as arguments
 
