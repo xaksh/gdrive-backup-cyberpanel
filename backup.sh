@@ -15,7 +15,9 @@ start=$SECONDS
 ls -1 /home -Icyberpanel -Idocker -Ibackup -Ilscache -Ivmail | while read user; do
 cyberpanel createBackup --domainName $user > /dev/null
 sleep 45
-rclone copy /home/$user/backup gdrive:basezap"$NODE"nodebackups/$SERVER_HOSTNAME/$DATE/$user
+while ! grep "Completed" /home/$user/backup/status > /dev/null;do sleep 60;done
+rclone copy /home/$user/backup/status gdrive:basezap"$NODE"nodebackups/$SERVER_HOSTNAME/$DATE/$user
+rclone copy /home/$user/backup/*.tar.gz gdrive:basezap"$NODE"nodebackups/$SERVER_HOSTNAME/$DATE/$user
 wait
 # Clean backup directory
 rm -rf /home/$user/backup/*
