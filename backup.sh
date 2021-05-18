@@ -29,6 +29,8 @@ if [[ -f /home/$user/backup/status ]]; then
 	while ! grep "Completed" /home/$user/backup/status > /dev/null;do sleep 60;done
 		rclone copy /home/$user/backup/status gdrive:basezap"$NODE"nodebackups/$SERVER_HOSTNAME/$DATE/$user > /dev/null 2>> /root/gdrive-backup-cyberpanel/user.log
 		rclone copy /home/$user/backup/*.tar.gz gdrive:basezap"$NODE"nodebackups/$SERVER_HOSTNAME/$DATE/$user > /dev/null 2>> /root/gdrive-backup-cyberpanel/user.log
+		# Remove backup file
+		rm -f /home/$user/backup/* > /dev/null 2>> /root/gdrive-backup-cyberpanel/user.log
 		wait
 else
 	echo "Missing Backup Status File" >> /root/gdrive-backup-cyberpanel/user.log
@@ -38,8 +40,8 @@ else
 fi
 # Update temp.log with user.log
 cat /root/gdrive-backup-cyberpanel/user.log >> /root/gdrive-backup-cyberpanel/temp.log
-# Clean backup directory and user log file
-rm -rf /home/$user/backup/* /root/gdrive-backup-cyberpanel/user.log
+# Remove user log file
+rm -f /root/gdrive-backup-cyberpanel/user.log
 wait
 done
 if [[ -s /root/gdrive-backup-cyberpanel/temp.log ]]; then
