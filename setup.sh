@@ -6,6 +6,7 @@ sed -i "s/^NODE=.*/NODE='$2'/" /root/gdrive-backup-cyberpanel/backup.sh
 sed -i "s/^NOTIFY_TO=.*/NOTIFY_TO='$4'/" /root/gdrive-backup-cyberpanel/backup.sh
 sed -i "s/^FROM=.*/FROM='$5'/" /root/gdrive-backup-cyberpanel/backup.sh
 sed -i "s/^TO=.*/TO='$6'/" /root/gdrive-backup-cyberpanel/backup.sh
+sed -i "s?PATH=.*?PATH=$PATH?" /root/gdrive-backup-cyberpanel/backup.sh
 
 # Run cron.sh for adding cronjob
 bash /root/gdrive-backup-cyberpanel/cron.sh "$3"
