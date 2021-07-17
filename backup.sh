@@ -10,7 +10,7 @@ TO=
 MID="$(</dev/urandom tr -dc "A-Za-z0-9" | head -c26)"
 
 #Set the PATH variable
-export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+export PATH=
 
 # Suppress Python Warnings
 export PYTHONWARNINGS="ignore:Unverified HTTPS request"
